@@ -1,0 +1,20 @@
+# Author: RickaPrincy <rckprincy@gmail.com>
+pkgname=ussd
+pkgver=@USSD_LIB_VERSION@
+pkgrel=1
+pkgdesc="prog5 exercice"
+arch=('x86_64')
+depends=()
+url="https://github.com/RickaPrincy/prog-5-ussd"
+license=('MIT')
+source=("ussd@$pkgver.tar.gz::https://github.com/RickaPrincy/prog-5-ussd/releases/download/v@USSD_VERSION@/ussd@$pkgver.tar.gz")
+
+sha256sums=("SHASUM")
+
+package() {
+    echo "Installing to \"$pkgdir/usr/\""
+    mkdir -p "$pkgdir/usr/include"
+    mkdir -p "$pkgdir/usr/lib"
+    cp -r "ussd@$pkgver/include" "$pkgdir/usr"
+    cp -r "ussd@$pkgver/lib" "$pkgdir/usr"
+}
