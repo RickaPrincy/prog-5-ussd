@@ -17,17 +17,15 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
 endif()
 
 # target names
-set(USSD_LIB_NAME ussd)
-set(USSD_LIB_VERSION 0.0.1)
-set(USSD_LIB_VERSION_MAJOR 0)
+set(USSD_CLI_NAME ussd)
+set(USSD_CLI_VERSION 0.0.1)
+set(USSD_CLI_VERSION_MAJOR 0)
 set(USSD_VERSION ${PROJECT_VERSION})
 set(USSD_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 
 # list of options
-option(BUILD_SHARED_LIBS "Build rcli as a shared library"
-       ${USSD_IS_MAIN_PROJECT})
-option(USSD_LIB_BUILD "Build ussd lib" ON)
-option(USSD_LIB_INSTALL "Install ussd lib" ${USSD_IS_MAIN_PROJECT})
+option(USSD_CLI_BUILD "Build ussd cli" ON)
+option(USSD_CLI_INSTALL "Install ussd cli" ${USSD_IS_MAIN_PROJECT})
 
 # configure build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -43,41 +41,54 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 if(USSD_IS_MAIN_PROJECT)
-  configure_file(${USSD_SOURCE_DIR}/.templates/PKGBUILD.in
-                 ${USSD_SOURCE_DIR}/PKGBUILD @ONLY)
-
-  configure_file(${USSD_SOURCE_DIR}/.templates/install.sh.in
-                 ${USSD_SOURCE_DIR}/install.sh @ONLY)
-
-  configure_file(${USSD_SOURCE_DIR}/.templates/create-release.sh.in
-                 ${USSD_SOURCE_DIR}/create-release.sh @ONLY)
-
   configure_file(
-    ${USSD_SOURCE_DIR}/.templates/${USSD_LIB_NAME}Config.hpp.in
-    ${USSD_SOURCE_DIR}/include/${USSD_LIB_NAME}/${USSD_LIB_NAME}Config.hpp
+    ${USSD_SOURCE_DIR}/.templates/${USSD_CLI_NAME}Config.hpp.in
+    ${USSD_SOURCE_DIR}/include/${USSD_CLI_NAME}/${USSD_CLI_NAME}Config.hpp
     @ONLY)
 endif()
 
 add_subdirectory(sources)
 
-# clang-format configuration
-find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
-if(CLANG_FORMAT_EXECUTABLE)
-  file(GLOB_RECURSE ALL_SOURCE_FILES "${USSD_SOURCE_DIR}/sources/*.cpp"
-       "${USSD_SOURCE_DIR}/include/ussd/*.hpp")
-  add_custom_target(
-    clang-format
-    COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}
-    COMMENT "Running clang-format")
-else()
-  message(
-    WARNING "clang-format not found. Clang-format target will not be available."
-  )
-endif()
-
 # CPack configuration
 set(CPACK_PACKAGE_VENDOR "RickaPrincy <rckprincy@gmail.com>")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
-    prog5 exercice
+  prog5 exercice
 )
 include(CPack)
+
+# Clang-Format
+find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
+if(CLANG_FORMAT_EXECUTABLE)
+  file(GLOB_RECURSE ALL_SOURCE_FILES
+     "${USSD_SOURCE_DIR}/sources/*.cpp"
+     "${USSD_SOURCE_DIR}/include/ussd/*.hpp")
+
+  add_custom_target(format
+    COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}
+    COMMENT "Running clang-format to format code"
+  )
+
+  add_custom_target(format-check
+    COMMAND ${CLANG_FORMAT_EXECUTABLE} --dry-run --Werror -style=file ${ALL_SOURCE_FILES}
+    COMMENT "Checking code format (clang-format) - will fail if formatting issues"
+  )
+else()
+  message(WARNING "clang-format not found. Format targets will NOT be available.")
+endif()
+
+# Clang-Tidy
+find_program(CLANG_TIDY_EXECUTABLE NAMES clang-tidy)
+if(CLANG_TIDY_EXECUTABLE)
+  if(NOT ALL_SOURCE_FILES)
+    file(GLOB_RECURSE ALL_SOURCE_FILES
+       "${USSD_SOURCE_DIR}/sources/*.cpp"
+       "${USSD_SOURCE_DIR}/include/ussd/*.hpp")
+  endif()
+  
+  add_custom_target(lint
+    COMMAND ${CLANG_TIDY_EXECUTABLE} -p ${CMAKE_CURRENT_BINARY_DIR} ${ALL_SOURCE_FILES}
+    COMMENT "Running clang-tidy"
+  )
+else()
+  message(WARNING "clang-tidy not found. clang-tidy target will NOT be available.")
+endif()

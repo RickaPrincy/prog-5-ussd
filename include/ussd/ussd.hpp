@@ -1,5 +1,6 @@
 #pragma once
 
-namespace ussd{
-    int sum(int a, int b);
+namespace ussd
+{
+	auto sum(int lhs, int rhs) -> int;
 }

@@ -1,6 +1,6 @@
 #include <ussd/ussd.hpp>
-#include <ussd/ussdConfig.hpp>
 
-int ussd::sum(int a, int b){
-    return a + b;
+auto ussd::sum(int lhs, int rhs) -> int
+{
+	return rhs + lhs;
 }

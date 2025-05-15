@@ -7,6 +7,21 @@ on:
     branches: [ "main" ]
 
 jobs:
+  style:
+    runs-on: ubuntu-latest
+    name: check-style 
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: configure 
+      run: cmake -S . -B build
+    
+    - name: format-check
+      run: cmake --build build --target format-check
+
+    - name: link 
+      run: cmake --build build --target lint
+
   build:
     runs-on: ubuntu-latest
     name: build with cmake
@@ -18,20 +33,3 @@ jobs:
 
     - name: build 
       run: cd build; make
-
-  style:
-    runs-on: ubuntu-latest
-    name: check style 
-    strategy:
-      matrix:
-        path:
-          - 'src'
-          - 'include'
-    steps:
-    - uses: actions/checkout@v4
-    - name: Run clang-format
-      uses: jidicula/clang-format-action@v4.13.0
-      with:
-        clang-format-version: '18'
-        check-path: ${{ matrix.path }}
-        fallback-style: 'Mozilla'
