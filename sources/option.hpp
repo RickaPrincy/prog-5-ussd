@@ -16,7 +16,7 @@ namespace ussd
 		Option *p_parent = nullptr;
 		std::vector<Option *> m_childs{};
 		// clang-format off
-  Callback m_callback = []() {};
+    Callback m_callback = []() {};
 		// clang-format on
 
 	public:
