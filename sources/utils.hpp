@@ -1,18 +1,24 @@
 #pragma once
 
-#include "option.hpp"
+#include <chrono>
+#include <future>
+#include <optional>
 
 namespace ussd
 {
-	class SpecialOption
-	{
-	public:
-		static const std::string ROOT_LABEL;
-		static const std::string BACK_LABEL;
-		static const std::string EXIT_LABEL;
-	};
 
-	auto get_choice_from_option(Option *option) -> std::string;
-	auto handle_special_resonse(const std::string &response, bool &is_running, Option *&current)
-		-> bool;
+	template<typename T>
+	auto execute_with_timeout(std::function<T()> func, std::chrono::seconds timeout)  // NOLINT
+		-> std::optional<T>
+	{
+		auto future = std::async(std::launch::async, func);
+		if (future.wait_for(timeout) == std::future_status::ready)
+		{
+			return future.get();
+		}
+		else
+		{
+			return std::nullopt;
+		}
+	}
 }  // namespace ussd

@@ -1,6 +1,6 @@
 project(${USSD_CLI_NAME} VERSION ${USSD_CLI_VERSION} LANGUAGES CXX)
 
-set(CLI_SOURCES main.cpp root.cpp option.cpp utils.cpp)
+set(CLI_SOURCES main.cpp static_options.cpp option.cpp special.cpp)
 
 add_executable(${USSD_CLI_NAME} ${CLI_SOURCES})
 
