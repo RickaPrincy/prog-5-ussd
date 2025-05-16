@@ -12,19 +12,20 @@ namespace ussd
 	{
 	private:
 		std::string m_label{};
-		Option *p_parent = nullptr;
-		std::vector<Option> m_childs{};
+		Option* p_parent = nullptr;
+		std::vector<Option*> m_childs{};
 		Callback m_callback = []() { };
 
 	public:
 		Option(std::string label, Callback callback);
-		Option(std::string label, std::vector<Option> m_childs);
+		Option(std::string label, std::vector<Option*> m_childs);
+		virtual ~Option();
 
 		auto get_label() -> std::string;
-		auto get_root() -> Option *;
-		auto get_parent() -> Option *;
-		auto select_child(int index) -> Option *;
-		auto get_childs() -> std::vector<Option>;
+		auto get_parent() -> Option*;
+		auto get_root() -> Option*;
+		auto get_childs() -> std::vector<Option*>*;
+		auto select_child(std::string& label) -> Option*;
 		virtual auto print() -> void;
 	};
 }  // namespace ussd
