@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # deps
-#find_package(rcli REQUIRED)
+find_package(rcli REQUIRED VERSIONS 2.0.22)
 
 set(USSD_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(USSD_IS_MAIN_PROJECT OFF)
@@ -56,7 +56,7 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
 )
 include(CPack)
 
-# Clang-Format
+# clang-format
 find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
 if(CLANG_FORMAT_EXECUTABLE)
   file(GLOB_RECURSE ALL_SOURCE_FILES
@@ -76,7 +76,7 @@ else()
   message(WARNING "clang-format not found. Format targets will NOT be available.")
 endif()
 
-# Clang-Tidy
+# clang-tidy
 find_program(CLANG_TIDY_EXECUTABLE NAMES clang-tidy)
 if(CLANG_TIDY_EXECUTABLE)
   if(NOT ALL_SOURCE_FILES)

@@ -1,8 +1,13 @@
-#include <iostream>
-#include <ussd/ussd.hpp>
+#include <ussd/option.hpp>
 
-auto main(int argc, char *argv[]) -> int
+#include "root.hpp"
+
+auto main() -> int
 {
-	std::cout << ussd::sum(2, 5) << "\n";
+	auto is_running = true;
+	auto root = ussd::create_root_menu(is_running);
+	auto *current = &root;
+
+	current->print();
 	return 0;
 }
