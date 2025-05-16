@@ -23,7 +23,7 @@ namespace ussd
 		Option(std::string id, std::string label, Callback callback);
 		Option(std::string id, std::string label, std::vector<Option *> m_childs);
 		virtual ~Option();
-		virtual auto ask_choices(Option *&current, bool &is_running) -> std::string;
+		virtual auto ask_choices() -> std::string;
 		virtual auto print() -> void;
 		virtual auto execute_callback() -> void;
 

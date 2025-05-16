@@ -99,7 +99,7 @@ namespace ussd
 			this->m_childs.begin(), this->m_childs.end(), [&](Option *child) { delete child; });
 	}
 
-	auto Option::ask_choices(Option *&current, bool &is_running) -> std::string
+	auto Option::ask_choices() -> std::string
 	{
 		std::vector<std::string> choices{};
 		std::transform(this->m_childs.begin(),

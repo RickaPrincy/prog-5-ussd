@@ -31,7 +31,7 @@ auto main() -> int
 
 		try
 		{
-			auto user_choice = current->ask_choices(current, is_running);
+			auto user_choice = current->ask_choices();
 			auto choosed_option = current->select_child(user_choice);
 			if (choosed_option->get_childs()->empty())
 			{
