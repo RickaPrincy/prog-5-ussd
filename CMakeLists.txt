@@ -61,6 +61,7 @@ find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
 if(CLANG_FORMAT_EXECUTABLE)
   file(GLOB_RECURSE ALL_SOURCE_FILES
      "${USSD_SOURCE_DIR}/sources/*.cpp"
+     "${USSD_SOURCE_DIR}/sources/*.hpp"
      "${USSD_SOURCE_DIR}/include/ussd/*.hpp")
 
   add_custom_target(format
@@ -82,6 +83,7 @@ if(CLANG_TIDY_EXECUTABLE)
   if(NOT ALL_SOURCE_FILES)
     file(GLOB_RECURSE ALL_SOURCE_FILES
        "${USSD_SOURCE_DIR}/sources/*.cpp"
+       "${USSD_SOURCE_DIR}/sources/*.hpp"
        "${USSD_SOURCE_DIR}/include/ussd/*.hpp")
   endif()
   

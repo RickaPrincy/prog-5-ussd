@@ -13,6 +13,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: install TColor 
+      run: bash <(curl -s https://raw.githubusercontent.com/RickaPrincy/TColor.hpp/main/install.sh)
+
+    - name: install rcli 
+      run: bash <(curl -s https://raw.githubusercontent.com/RickaPrincy/rcli/main/install.sh)
+
     - name: configure 
       run: cmake -S . -B build
     
@@ -27,6 +33,12 @@ jobs:
     name: build with cmake
     steps:
     - uses: actions/checkout@v4
+    
+    - name: install TColor 
+      run: bash <(curl -s https://raw.githubusercontent.com/RickaPrincy/TColor.hpp/main/install.sh)
+
+    - name: install rcli 
+      run: bash <(curl -s https://raw.githubusercontent.com/RickaPrincy/rcli/main/install.sh)
 
     - name: configure 
       run: cmake -DCMAKE_BUILD_TYPE=Release -S . -B build

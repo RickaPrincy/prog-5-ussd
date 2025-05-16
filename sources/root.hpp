@@ -1,5 +1,6 @@
 #include <ussd/option.hpp>
 
-namespace ussd {
+namespace ussd
+{
 	auto create_root_menu(bool &is_running) -> Option;
 }
